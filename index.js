@@ -46,7 +46,7 @@ const run = () => {
     console.info(`Connection to SSL host ${url} closed`)
   })
 
-  //setInterval(function () {
+  setInterval(function () {
     var feedparser = new FeedParser();
     var req = fetch('https://www.gdacs.org/xml/rss.xml')
   
@@ -80,7 +80,7 @@ const run = () => {
       };
     });
 
-  //}, interval);
+  }, interval);
 };
 
 console.log(interval);
