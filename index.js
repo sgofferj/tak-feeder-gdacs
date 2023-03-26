@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const FeedParser = require('feedparser');
 const fetch = require('node-fetch');
 const functions = require('./lib/functions.js');
@@ -8,6 +10,7 @@ const url = process.env.REMOTE_SSL_SERVER
 const sslCert = process.env.REMOTE_SSL_SERVER_CERTIFICATE
 const sslKey = process.env.REMOTE_SSL_SERVER_KEY
 const intervalSecs = (typeof process.env.GDACS_PULL_INTERVAL !== 'undefined') ? process.env.GDACS_PULL_INTERVAL : 60;
+const logCot = (typeof process.env.LOGCOT !== 'undefined') ? process.env.LOGCOT : false;
 
 var interval = intervalSecs * 1000;
 
@@ -46,7 +49,11 @@ const run = () => {
     console.info(`Connection to SSL host ${url} closed`)
   })
 
-  setInterval(function () {
+  function heartbeat() {
+    
+  }
+
+  function pullandfeed() {
     var feedparser = new FeedParser();
     var req = fetch('https://www.gdacs.org/xml/rss.xml')
   
@@ -72,18 +79,19 @@ const run = () => {
   
       while (item = stream.read()) {
         if (item['gdacs:iscurrent']['#'] == 'true') {
-          console.log(item);
-          client.write(functions.gdacs2cot(item));
-          console.log(functions.gdacs2cot(item));
-          console.log('---------------------------------------')
+          //console.log(item);
+          client.write(functions.gdacs2cot(item,intervalSecs));
+          if (logCot) {
+            console.log(functions.gdacs2cot(item,intervalSecs));
+            console.log('---------------------------------------')
+          }
         }
       };
     });
-
-  }, interval);
+    setTimeout(pullandfeed,interval);
+  };
+  pullandfeed();
 };
-
-console.log(interval);
 
 if (url && sslCert && sslKey) {
   run();
