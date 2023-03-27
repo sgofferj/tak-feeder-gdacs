@@ -6,7 +6,7 @@ const functions = require('./lib/functions.js');
 const tls = require('tls')
 const fs = require('fs')
 
-const url = process.env.REMOTE_SSL_SERVER
+const url = process.env.REMOTE_SERVER_URL
 const sslCert = process.env.REMOTE_SSL_SERVER_CERTIFICATE
 const sslKey = process.env.REMOTE_SSL_SERVER_KEY
 const intervalSecs = (typeof process.env.GDACS_PULL_INTERVAL !== 'undefined') ? process.env.GDACS_PULL_INTERVAL : 60;
@@ -83,7 +83,7 @@ const run = () => {
           client.write(functions.gdacs2cot(item,intervalSecs));
           if (logCot) {
             console.log(functions.gdacs2cot(item,intervalSecs));
-            console.log('---------------------------------------')
+            console.log('-----')
           }
         }
       };
