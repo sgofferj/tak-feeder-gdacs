@@ -38,7 +38,7 @@ These are the server-issued certificate and key files. Before using, the passwor
 ## Container use
 First, get your certificate and key and copy them to a suitable folder which needs to be added as a volume to the container.
 ### Image
-The image is built for AMD64 and ARM64 and pushed to ghcr.io: *ghcr.io/sgofferj/tag-feeder-gdacs:latest*
+The image is built for AMD64 and ARM64 and pushed to ghcr.io: *ghcr.io/sgofferj/tak-feeder-gdacs:latest*
 ### Docker
 First, rename .env.example to .env and edit according to your needs \
 Create and start the container:
