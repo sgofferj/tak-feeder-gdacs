@@ -56,7 +56,7 @@ const run = () => {
 
   function heartbeat() {
     client.write(functions.heartbeatcot(heartbeatIntervall));
-    if (true) {
+    if (logCot) {
       console.log(functions.heartbeatcot(intervalSecs));
       console.log('-----')
     }

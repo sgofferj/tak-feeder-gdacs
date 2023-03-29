@@ -1,6 +1,5 @@
 [![Build and publish the container image](https://github.com/sgofferj/tak-feeder-gdacs/actions/workflows/actions.yml/badge.svg)](https://github.com/sgofferj/tak-feeder-gdacs/actions/workflows/actions.yml)
 
-<font color="red">**ALPHA - NOT READY FOR PRODUCTION**</font>
 # tak-feeder-gdacs
 Feed current GDACS disaster data into your TAK server
 
@@ -9,10 +8,17 @@ Feed current GDACS disaster data into your TAK server
 Licensed under the GNU General Public License V3 or later.
 
 ## Description
-ToDo
+### What is GDACS?
+GDACS or Global Disaster Alert and Coordination System (https://www.gdacs.org) is a cooperation framework between the United Nations and the European Commission. It includes disaster managers and disaster information systems worldwide and aims at filling the information and coordination gaps in the first phase after major disasters.
 
-## Purpose
-ToDo
+GDACS provides real-time access to web‐based disaster information systems and related coordination tools.
+A more detailed description of GDACS purpose, content and guidelines, agreed and approved by the steering committee can be found [here](https://www.gdacs.org/Documents/GDACS%20Guidelines%202014_-_FINAL.PDF).
+
+
+### TAK server feeder
+This feeder pulls the RSS feeds from GDACS, converts the current events to CoT messages and sends them to a TAK server. ATAK, WinTAK and WebTAK will show the events with icons corresponding to the type of event and the severity (WinTAK doesn't show the color, though).
+
+**Please note that neither the author nor this software project are in any way affiliated with GDACS.**
 ## Configuration
 The following values are supported and can be provided either as environment variables or through an .env-file.
 
@@ -25,10 +31,12 @@ The following values are supported and can be provided either as environment var
 | LOGCOT | false | (optional) Log created CoTs to the console |
 | UUID | empty | (optional) Set feeder UID - if not set, the feeder will create one |
 
+Note: At the moment, only SSL TCP connections are supported.
 ## Certificates
 These are the server-issued certificate and key files. Before using, the password needs to be removed from the key file with `openssl rsa -in cert.key -out cert-nopw.key`. OpenSSL will ask for the key password which usually is "atakatak".
 
 ## Container use
+First, get your certificate and key and copy them to a suitable folder which needs to be added as a volume to the container.
 ### Image
 The image is built for AMD64 and ARM64 and pushed to ghcr.io: *ghcr.io/sgofferj/tag-feeder-gdacs:latest*
 ### Docker
