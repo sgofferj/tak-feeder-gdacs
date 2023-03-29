@@ -36,22 +36,30 @@ const run = () => {
     } else {
       console.log("Connection not authorized: " + client.authorizationError)
     }
+    heartbeat();
+    pullandfeed();
  })
 
   client.on('data', (data) => {
-    console.log(data);
+    console.log(data.toString());
   })
 
   client.on('error', (err) => {
     console.error(`Could not connect to SSL host ${url}`)
+    setTimeout(run,10);
   })
 
   client.on('close', () => {
     console.info(`Connection to SSL host ${url} closed`)
+    setTimeout(run,10);
   })
 
   function heartbeat() {
     client.write(functions.heartbeatcot(heartbeatIntervall));
+    if (true) {
+      console.log(functions.heartbeatcot(intervalSecs));
+      console.log('-----')
+    }
     setTimeout(heartbeat,heartbeatIntervall);
   }
 
@@ -92,8 +100,6 @@ const run = () => {
     });
     setTimeout(pullandfeed,interval);
   };
-  heartbeat();
-  pullandfeed();
 };
 
 if (url && sslCert && sslKey) {
