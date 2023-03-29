@@ -12,6 +12,7 @@ const sslKey = process.env.REMOTE_SSL_SERVER_KEY
 const intervalSecs = (typeof process.env.GDACS_PULL_INTERVAL !== 'undefined') ? process.env.GDACS_PULL_INTERVAL : 60;
 const logCot = (typeof process.env.LOGCOT !== 'undefined') ? process.env.LOGCOT : false;
 
+const heartbeatIntervall = 30 * 1000;
 var interval = intervalSecs * 1000;
 
 process.env.TZ = 'UTC';
@@ -50,7 +51,8 @@ const run = () => {
   })
 
   function heartbeat() {
-    
+    client.write(functions.heartbeatcot(heartbeatIntervall));
+    setTimeout(heartbeat,heartbeatIntervall);
   }
 
   function pullandfeed() {
@@ -90,6 +92,7 @@ const run = () => {
     });
     setTimeout(pullandfeed,interval);
   };
+  heartbeat();
   pullandfeed();
 };
 
