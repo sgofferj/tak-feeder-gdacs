@@ -3,13 +3,15 @@ require('dotenv').config();
 const FeedParser = require('feedparser');
 const fetch = require('node-fetch');
 const functions = require('./lib/functions.js');
-const tls = require('tls')
-const fs = require('fs')
+const tls = require('tls');
+const fs = require('fs');
 
-const url = process.env.REMOTE_SERVER_URL
-const sslCert = process.env.REMOTE_SSL_SERVER_CERTIFICATE
-const sslKey = process.env.REMOTE_SSL_SERVER_KEY
+const url = process.env.REMOTE_SERVER_URL;
+const sslCert = process.env.REMOTE_SSL_SERVER_CERTIFICATE;
+const sslKey = process.env.REMOTE_SSL_SERVER_KEY;
+
 const intervalSecs = (typeof process.env.GDACS_PULL_INTERVAL !== 'undefined') ? process.env.GDACS_PULL_INTERVAL : 60;
+if (intervalSecs < 60) intervalSecs = 60;
 const logCot = (typeof process.env.LOGCOT !== 'undefined') ? process.env.LOGCOT : false;
 
 const heartbeatIntervall = 30 * 1000;
