@@ -43,7 +43,7 @@ The image is built for AMD64 and ARM64 and pushed to ghcr.io: *ghcr.io/sgofferj/
 First, rename .env.example to .env and edit according to your needs \
 Create and start the container:
 ```
-docker run -d --env-file .env -v <path-to-certificate-directory>:/certs:ro --name tak-feeder-gdacs --restart always ghcr.io/sgofferj/ami2mqtt:latest
+docker run -d --env-file .env -v <path-to-certificate-directory>:/certs:ro --name tak-feeder-gdacs --restart always ghcr.io/sgofferj/tak-feeder-gdacs:latest
 ```
 
 ### Docker compose
