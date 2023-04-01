@@ -48,12 +48,10 @@ const run = () => {
 
   client.on('error', (err) => {
     console.error(`Could not connect to SSL host ${url}`)
-    setTimeout(run,10);
   })
 
   client.on('close', () => {
     console.info(`Connection to SSL host ${url} closed`)
-    setTimeout(run,10);
   })
 
   function heartbeat() {
