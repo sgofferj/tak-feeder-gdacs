@@ -25,8 +25,8 @@ The following values are supported and can be provided either as environment var
 | Variable | Default | Purpose |
 |----------|---------|---------|
 | REMOTE_SERVER_URL | empty | (mandatory) TAK server full URL, e.g. ssl://takserver:8089 |
-| REMOTE_SSL_SERVER_CERTIFICATE | empty | (mandatory for ssl) User certificate in PEM format |
-| REMOTE_SSL_SERVER_KEY | empty | (mandatory for ssl) User certificate key file (xxx.key) |
+| REMOTE_SSL_USER_CERTIFICATE | empty | (mandatory for ssl) User certificate in PEM format |
+| REMOTE_SSL_USER_KEY | empty | (mandatory for ssl) User certificate key file (xxx.key) |
 | GDACS_PULL_INTERVAL | 60 | (optional) Update intervall in seconds |
 | LOGCOT | false | (optional) Log created CoTs to the console |
 | UUID | empty | (optional) Set feeder UID - if not set, the feeder will create one |
@@ -61,8 +61,8 @@ services:
       - <path to certificate-directory>:/certs:ro
     environment:
       - REMOTE_SERVER_URL=ssl://tak-server:8089
-      - REMOTE_SSL_SERVER_CERTIFICATE=cert.pem
-      - REMOTE_SSL_SERVER_KEY=key.pem
+      - REMOTE_SSL_USER_CERTIFICATE=cert.pem
+      - REMOTE_SSL_USER_KEY=key.pem
       - GDACS_PULL_INTERVAL=60
       - LOGCOT=false
 

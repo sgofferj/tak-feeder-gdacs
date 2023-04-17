@@ -7,12 +7,15 @@ const tls = require('tls');
 const fs = require('fs');
 
 const url = process.env.REMOTE_SERVER_URL;
-const sslCert = process.env.REMOTE_SSL_SERVER_CERTIFICATE;
-const sslKey = process.env.REMOTE_SSL_SERVER_KEY;
+const sslCert = process.env.REMOTE_SSL_USER_CERTIFICATE;
+const sslKey = process.env.REMOTE_SSL_USER_KEY;
 
-const intervalSecs = (typeof process.env.GDACS_PULL_INTERVAL !== 'undefined') ? process.env.GDACS_PULL_INTERVAL : 60;
+if (!functions.checkFile(sslCert)) process.exit();
+if (!functions.checkFile(sslKey)) process.exit();
+
+let intervalSecs = (typeof process.env.GDACS_PULL_INTERVAL !== 'undefined') ? process.env.GDACS_PULL_INTERVAL : 60;
 if (intervalSecs < 60) intervalSecs = 60;
-const logCot = (typeof process.env.LOGCOT !== 'undefined') ? process.env.LOGCOT : false;
+const logCot = (typeof process.env.LOGCOT !== 'undefined') ? (process.env.LOGCOT == "true") : false;
 
 const heartbeatIntervall = 30 * 1000;
 var interval = intervalSecs * 1000;
@@ -36,18 +39,22 @@ const run = () => {
     if (client.authorized) {
       console.log("Connection authorized by a Certificate Authority.")
     } else {
-      console.log("Connection not authorized: " + client.authorizationError)
+      console.log("Connection not authorized: " + client.authorizationError + " - ignoring")
     }
     heartbeat();
     pullandfeed();
  })
 
   client.on('data', (data) => {
-    console.log(data.toString());
+    if (logCot === true) {
+      console.log(data.toString());
+    }
   })
 
   client.on('error', (err) => {
-    console.error(`Could not connect to SSL host ${url}`)
+    console.error(`Could not connect to SSL host ${url}`);
+    console.error(err);
+    process.exit();
   })
 
   client.on('close', () => {
@@ -56,8 +63,8 @@ const run = () => {
 
   function heartbeat() {
     client.write(functions.heartbeatcot(heartbeatIntervall));
-    if (logCot) {
-      console.log(functions.heartbeatcot(intervalSecs));
+    if (logCot === true) {
+      console.log(functions.heartbeatcot(heartbeatIntervall));
       console.log('-----')
     }
     setTimeout(heartbeat,heartbeatIntervall);
@@ -89,9 +96,8 @@ const run = () => {
   
       while (item = stream.read()) {
         if (item['gdacs:iscurrent']['#'] == 'true') {
-          //console.log(item);
           client.write(functions.gdacs2cot(item,intervalSecs));
-          if (logCot) {
+          if (logCot === true) {
             console.log(functions.gdacs2cot(item,intervalSecs));
             console.log('-----')
           }
