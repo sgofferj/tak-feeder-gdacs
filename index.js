@@ -59,6 +59,7 @@ const run = () => {
 
   client.on('close', () => {
     console.info(`Connection to SSL host ${url} closed`)
+    process.exit();
   })
 
   function heartbeat() {
