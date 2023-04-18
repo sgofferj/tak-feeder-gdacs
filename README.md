@@ -68,3 +68,23 @@ services:
 
 networks:
   default:
+```
+The following example is for using the container with compose on the same machine as the TAK server. Submitted by [atakhq](https://github.com/atakhq).
+
+```
+version: '2.0'
+
+services:
+  gdacs:
+    image: ghcr.io/sgofferj/tak-feeder-gdacs:latest
+    restart: always
+    network_mode: host
+    volumes:
+      - ~/tak-server/certs:/certs:ro
+    environment:
+      - REMOTE_SERVER_URL=ssl://127.0.0.1:8089
+      - REMOTE_SSL_USER_CERTIFICATE=/certs/gdacs.pem
+      - REMOTE_SSL_USER_KEY=/certs/gdacs-nopw.key
+      - GDACS_PULL_INTERVAL=60
+      - LOGCOT=false
+```
